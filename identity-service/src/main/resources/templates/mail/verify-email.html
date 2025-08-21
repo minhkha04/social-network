@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác thực OTP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333333;
+        }
+        .otp {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #2c7be5;
+            margin: 20px 0;
+        }
+        p {
+            color: #555555;
+            font-size: 15px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Xác thực tài khoản</h2>
+    <p>Xin chào,</p>
+    <p>Mã OTP để xác thực email của bạn là:</p>
+    <div class="otp">
+        {{otp}}
+    </div>
+    <p>Mã này có hiệu lực trong <strong>5 phút</strong>. Vui lòng không chia sẻ cho bất kỳ ai.</p>
+    <div class="footer">
+        © 2025 YourCompany. All rights reserved.
+    </div>
+</div>
+</body>
+</html>
