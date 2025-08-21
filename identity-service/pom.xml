@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.minhkha</groupId>
-	<artifactId>identity</artifactId>
+	<artifactId>identity-service</artifactId>
 	<version>0.0.1</version>
 	<name>identity-service</name>
 	<url/>

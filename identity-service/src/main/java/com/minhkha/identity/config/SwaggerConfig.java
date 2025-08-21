@@ -24,7 +24,7 @@ public class SwaggerConfig {
                         .title("API Identity Project")
                         .version("1.0.0")
                         .description("Tài liệu API cho hệ thống login (email/password, Google, Facebook)"))
-                .servers(List.of(new Server().url("/identity/api").description("Default server url")))
+                .servers(List.of(new Server().url("/identity-service").description("Default server url")))
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes(SECURITY_SCHEME_NAME,
