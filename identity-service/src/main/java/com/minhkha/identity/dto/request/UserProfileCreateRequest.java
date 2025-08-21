@@ -1,4 +1,4 @@
-package com.minhkha.profile.dto.request;
+package com.minhkha.identity.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UserProfileCreateRequest {
+    String userId;
     String fullName;
     LocalDate birthDate;
     String city;
     String sex;
-    String userId;
 }

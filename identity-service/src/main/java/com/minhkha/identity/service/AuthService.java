@@ -9,18 +9,22 @@ import com.minhkha.identity.expection.AppException;
 import com.minhkha.identity.expection.ErrorCode;
 import com.minhkha.identity.expection.JwtProvider;
 import com.minhkha.identity.mapper.UserMapper;
+import com.minhkha.identity.mapper.UserProfileMapper;
 import com.minhkha.identity.repository.UserRepository;
+import com.minhkha.identity.repository.httpclient.UserProfileClient;
 import com.minhkha.identity.strategy.AuthStrategyFactory;
 import com.minhkha.identity.utils.OtpUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
@@ -33,6 +37,8 @@ public class AuthService {
     JwtProvider jwtProvider;
     MailService mailService;
     MailOtpService mailOtpService;
+    UserProfileClient userProfileClient;
+    UserProfileMapper userProfileMapper;
 
     public AuthenticationResponse login(AuthRequest request, AuthProvider authProvider) {
         return authStrategyFactory.getStrategy(authProvider).login(request);
@@ -47,8 +53,12 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setRole(Role.USER);
-        userRepository.save(user);
-        mailOtpService.verify(request.getEmail(), request.getOtp());
+        user = userRepository.save(user);
+        UserProfileCreateRequest userProfileCreateRequest = userProfileMapper.toUserProfileCreateRequest(user);
+        userProfileClient.createUserProfile(userProfileCreateRequest);
+
+
+//        mailOtpService.verify(request.getEmail(), request.getOtp());
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
                 .build();
@@ -100,7 +110,7 @@ public class AuthService {
     public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
         User user = userRepository.findUserByEmail(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        mailOtpService.verify(request.getEmail(), request.getOtp());
+//        mailOtpService.verify(request.getEmail(), request.getOtp());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         return AuthenticationResponse.builder()

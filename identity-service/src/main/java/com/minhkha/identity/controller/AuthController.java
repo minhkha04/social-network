@@ -58,7 +58,7 @@ public class AuthController {
                 .build();
     }
 
-    @PostMapping("/reset-password")
+    @PutMapping("/reset-password")
     public ApiResponse<AuthenticationResponse> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
         return ApiResponse.<AuthenticationResponse>builder()
                 .data(authService.resetPassword(request))
