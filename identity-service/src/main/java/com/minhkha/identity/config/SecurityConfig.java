@@ -29,7 +29,7 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_URLS = {"/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/v1/auth/**"};
+    private static final String[] PUBLIC_URLS = {"/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/auth/**"};
 
     @Value("${app.jwt.secret}")
     private String SIGNER_KEY;

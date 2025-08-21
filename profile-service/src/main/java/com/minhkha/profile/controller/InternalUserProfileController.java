@@ -11,23 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-@RequestMapping("/user-profiles")
-public class UserProfileController {
+@RequestMapping("/internal/user-profiles")
+public class InternalUserProfileController {
 
     UserProfileService userService;
 
-    @GetMapping("/{id}")
-    public UserProfileResponse getUserProfileById(@PathVariable String id) {
-        return userService.getProfileById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUserProfileById(@PathVariable String id) {
-        userService.deleteProfileById(id);
-    }
-
-    @PutMapping("/{id}")
-    public UserProfileResponse updateUserProfile(@RequestBody UserProfileUpdateRequest request, @PathVariable String id) {
-        return  userService.updateProfile(request, id);
+    @PostMapping()
+    public UserProfileResponse createUserProfile(@RequestBody UserProfileCreateRequest request) {
+            return userService.createUserProfile(request);
     }
 }
