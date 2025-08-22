@@ -4,6 +4,7 @@ import com.minhkha.identity.dto.request.*;
 import com.minhkha.identity.dto.response.ApiResponse;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
+import com.minhkha.identity.dto.response.UserProfileResponse;
 import com.minhkha.identity.eums.AuthProvider;
 import com.minhkha.identity.eums.MailType;
 import com.minhkha.identity.service.AuthService;
@@ -24,7 +25,7 @@ public class AuthController {
     public ApiResponse<AuthenticationResponse> login(
             @RequestParam AuthProvider provider,
             @RequestBody AuthRequest request
-            ) {
+    ) {
         return ApiResponse.<AuthenticationResponse>builder()
                 .data(authService.login(request, provider))
                 .build();
@@ -65,4 +66,10 @@ public class AuthController {
                 .build();
     }
 
+    @GetMapping("/my-profile")
+    public ApiResponse<UserProfileResponse> getMyProfile() {
+        return ApiResponse.<UserProfileResponse>builder()
+                .data(authService.getUserProfile())
+                .build();
+    }
 }

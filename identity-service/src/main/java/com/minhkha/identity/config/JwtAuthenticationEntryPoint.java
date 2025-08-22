@@ -1,7 +1,8 @@
-package com.minhkha.identity.expection;
+package com.minhkha.identity.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minhkha.identity.dto.response.ApiResponse;
+import com.minhkha.identity.expection.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

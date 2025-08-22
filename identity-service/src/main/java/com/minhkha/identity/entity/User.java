@@ -28,14 +28,4 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     Role role;
-
-    @Column(length = 50, nullable = false)
-    String fullName;
-
-    @Column(nullable = false)
-    LocalDateTime createdAt;
-
-    LocalDateTime updatedAt;
-
-    LocalDate birthDate;
 }

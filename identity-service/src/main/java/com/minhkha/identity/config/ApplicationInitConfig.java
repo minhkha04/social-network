@@ -28,9 +28,7 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .email("admin@admin")
                         .password(passwordEncoder.encode("12345678"))
-                        .fullName("Admin")
                         .role(Role.ADMIN)
-                        .createdAt(LocalDateTime.now())
                         .build();
                 userRepository.save(user);
                 log.warn("Admin user has been created!");

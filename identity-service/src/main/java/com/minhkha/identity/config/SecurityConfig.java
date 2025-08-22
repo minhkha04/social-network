@@ -1,6 +1,5 @@
 package com.minhkha.identity.config;
 
-import com.minhkha.identity.expection.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +33,13 @@ public class SecurityConfig {
     @Value("${app.jwt.secret}")
     private String SIGNER_KEY;
 
+    private final CustomJwtDecoder customJwtDecoder;
+
+    public SecurityConfig(CustomJwtDecoder jwtDecoder) {
+        this.customJwtDecoder = jwtDecoder;
+    }
+
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
@@ -50,7 +56,7 @@ public class SecurityConfig {
         httpSecurity.oauth2ResourceServer(oauth2ResourceServer ->
                 oauth2ResourceServer.jwt(jwt -> jwt
                                 // cung cấp token cho oauth2 để xác thực
-                                .decoder(jwtDecoder())
+                                .decoder(customJwtDecoder)
                                 // map SCOPE trong token thành ROLE
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
@@ -58,10 +64,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
 
-        httpSecurity
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
 
@@ -81,20 +84,5 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
-    }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        // Domain
-        corsConfiguration.addAllowedOrigin("*");
-
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedHeader("*");
-
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        //End point
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        return new CorsFilter(urlBasedCorsConfigurationSource);
     }
 }

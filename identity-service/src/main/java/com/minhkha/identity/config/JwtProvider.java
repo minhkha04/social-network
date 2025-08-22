@@ -1,6 +1,8 @@
-package com.minhkha.identity.expection;
+package com.minhkha.identity.config;
 
 import com.minhkha.identity.entity.User;
+import com.minhkha.identity.expection.AppException;
+import com.minhkha.identity.expection.ErrorCode;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -55,11 +57,11 @@ public class JwtProvider {
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             boolean isValid = verified && expirationTime.after(new Date());
             if (!isValid) {
-                throw new AppException(ErrorCode.UNAUTHENTICATED);
+                throw new AppException(ErrorCode.UNAUTHORIZED);
             }
             return signedJWT;
         } catch (JOSEException | ParseException e) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.UNAUTHORIZED);
         }
     }
 }

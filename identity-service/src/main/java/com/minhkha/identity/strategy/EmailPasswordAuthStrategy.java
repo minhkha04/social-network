@@ -6,7 +6,7 @@ import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.AuthProvider;
 import com.minhkha.identity.expection.AppException;
 import com.minhkha.identity.expection.ErrorCode;
-import com.minhkha.identity.expection.JwtProvider;
+import com.minhkha.identity.config.JwtProvider;
 import com.minhkha.identity.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

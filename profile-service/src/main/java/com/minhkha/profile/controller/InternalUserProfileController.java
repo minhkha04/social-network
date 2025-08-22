@@ -20,4 +20,9 @@ public class InternalUserProfileController {
     public UserProfileResponse createUserProfile(@RequestBody UserProfileCreateRequest request) {
             return userService.createUserProfile(request);
     }
+
+    @GetMapping("/{userId}")
+    public UserProfileResponse getUserProfileByUserId(@PathVariable String userId) {
+        return userService.getProfileByUserId(userId);
+    }
 }

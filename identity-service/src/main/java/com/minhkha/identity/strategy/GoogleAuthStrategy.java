@@ -6,14 +6,17 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.minhkha.identity.dto.request.AuthRequest;
+import com.minhkha.identity.dto.request.UserProfileCreateRequest;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.AuthProvider;
 import com.minhkha.identity.eums.Role;
 import com.minhkha.identity.expection.AppException;
 import com.minhkha.identity.expection.ErrorCode;
-import com.minhkha.identity.expection.JwtProvider;
+import com.minhkha.identity.config.JwtProvider;
+import com.minhkha.identity.mapper.UserProfileMapper;
 import com.minhkha.identity.repository.UserRepository;
+import com.minhkha.identity.repository.httpclient.UserProfileClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -36,6 +38,8 @@ public class GoogleAuthStrategy implements AuthStrategy {
 
     UserRepository userRepository;
     JwtProvider jwtProvider;
+    UserProfileClient userProfileClient;
+    UserProfileMapper userProfileMapper;
 
     @NonFinal
     @Value("${google_client_id}")
@@ -63,9 +67,9 @@ public class GoogleAuthStrategy implements AuthStrategy {
             throw new AppException(ErrorCode.ACCESS_TOKEN_REQUIRED);
         }
         Payload payload = verifyToken(request.getAccessToken());
-        String name = (String) payload.get("name");
+        String fullName = (String) payload.get("name");
         String email = payload.getEmail();
-        String picture = (String) payload.get("picture");
+        String avatarUrl = (String) payload.get("picture");
         Optional<User> userOptional = userRepository.findUserByEmail(email);
         User user;
         if (userOptional.isPresent()) {
@@ -73,11 +77,14 @@ public class GoogleAuthStrategy implements AuthStrategy {
         } else {
             user = User.builder()
                     .email(email)
-                    .fullName(name)
                     .role(Role.USER)
-                    .createdAt(LocalDateTime.now())
                     .build();
             userRepository.save(user);
+            UserProfileCreateRequest userProfileCreateRequest = userProfileMapper.toUserProfileCreateRequest(user);
+            userProfileCreateRequest.setFullName(fullName);
+            userProfileCreateRequest.setAvatarUrl(avatarUrl);
+            userProfileClient.createUserProfile(userProfileCreateRequest);
+
         }
         String token = jwtProvider.generateToken(user);
         return AuthenticationResponse.builder()

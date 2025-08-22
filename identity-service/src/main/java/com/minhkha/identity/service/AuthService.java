@@ -3,11 +3,12 @@ package com.minhkha.identity.service;
 import com.minhkha.identity.dto.request.*;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
+import com.minhkha.identity.dto.response.UserProfileResponse;
 import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.*;
 import com.minhkha.identity.expection.AppException;
 import com.minhkha.identity.expection.ErrorCode;
-import com.minhkha.identity.expection.JwtProvider;
+import com.minhkha.identity.config.JwtProvider;
 import com.minhkha.identity.mapper.UserMapper;
 import com.minhkha.identity.mapper.UserProfileMapper;
 import com.minhkha.identity.repository.UserRepository;
@@ -18,10 +19,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -51,10 +52,11 @@ public class AuthService {
         }
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setCreatedAt(LocalDateTime.now());
         user.setRole(Role.USER);
         user = userRepository.save(user);
         UserProfileCreateRequest userProfileCreateRequest = userProfileMapper.toUserProfileCreateRequest(user);
+        userProfileCreateRequest.setFullName(request.getFullName());
+        userProfileCreateRequest.setBirthDate(request.getBirthDate());
         userProfileClient.createUserProfile(userProfileCreateRequest);
 
 
@@ -116,5 +118,10 @@ public class AuthService {
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
                 .build();
+    }
+
+    public UserProfileResponse getUserProfile() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userProfileClient.getUserProfileByUserId(userId);
     }
 }
