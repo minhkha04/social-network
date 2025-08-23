@@ -4,7 +4,6 @@ import com.minhkha.identity.dto.request.*;
 import com.minhkha.identity.dto.response.ApiResponse;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
-import com.minhkha.identity.dto.response.UserProfileResponse;
 import com.minhkha.identity.eums.AuthProvider;
 import com.minhkha.identity.eums.MailType;
 import com.minhkha.identity.service.AuthService;
@@ -14,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
@@ -63,13 +61,6 @@ public class AuthController {
     public ApiResponse<AuthenticationResponse> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
         return ApiResponse.<AuthenticationResponse>builder()
                 .data(authService.resetPassword(request))
-                .build();
-    }
-
-    @GetMapping("/my-profile")
-    public ApiResponse<UserProfileResponse> getMyProfile() {
-        return ApiResponse.<UserProfileResponse>builder()
-                .data(authService.getUserProfile())
                 .build();
     }
 }

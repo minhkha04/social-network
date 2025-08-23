@@ -21,4 +21,5 @@ public class UserProfileResponse {
     String city;
     String sex;
     String avatarUrl;
+    String email;
 }

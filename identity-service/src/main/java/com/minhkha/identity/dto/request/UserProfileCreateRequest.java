@@ -16,4 +16,5 @@ public class UserProfileCreateRequest {
     String city;
     String sex;
     String avatarUrl;
+    String email;
 }

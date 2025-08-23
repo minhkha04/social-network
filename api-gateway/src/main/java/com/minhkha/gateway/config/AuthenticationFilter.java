@@ -34,7 +34,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     @NonFinal
     List<String> publicEndpoints = List.of(
-            "/identity/auth/"
+            "/identity/"
     );
 
     @NonFinal
@@ -77,8 +77,6 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             return unauthenticated(exchange.getResponse());
         }
 
-
-
         String token = authHeader.getFirst().replace("Bearer ", "");
         return identityService.introspect(token).flatMap(introspectResponseApiResponse -> {
             if (introspectResponseApiResponse.getData().isValid()) {
@@ -86,14 +84,15 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             } else {
                 return unauthenticated(exchange.getResponse());
             }
-        }).onErrorResume(throwable -> unauthenticated(exchange.getResponse())
-        );
+        }).onErrorResume(throwable -> {
+            log.error("Error: {}", throwable.getMessage());
+            return unauthenticated(exchange.getResponse());
+        });
     }
 
     @Override
     public int getOrder() {
         return -1;
     }
-
 
 }

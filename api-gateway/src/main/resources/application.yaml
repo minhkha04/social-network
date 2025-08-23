@@ -17,7 +17,7 @@ spring:
         - id: profile-service
           uri: http://localhost:8081
           predicates:
-            - Path=${api.api-prefix}/profile/user-profiles/**
+            - Path=${api.api-prefix}/profile/**
           filters:
             - StripPrefix=${api.strip-prefix}
 

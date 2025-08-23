@@ -1,6 +1,7 @@
 package com.minhkha.identity.expection;
 
 import com.minhkha.identity.dto.response.ApiResponse;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +29,6 @@ public class GlobalExceptionHandler {
                         .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
                         .build());
     }
-
 
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     ResponseEntity<ApiResponse<Void>> handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
@@ -71,6 +71,18 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.<Void>builder()
                         .code(ErrorCode.INVALID_ARGUMENT.getCode())
                         .message(Objects.requireNonNull(exception.getFieldError()).getDefaultMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(FeignException.class)
+    ResponseEntity<ApiResponse<Void>> handleFeignException(FeignException exception) {
+        log.error("FeignException: {}", exception.getMessage());
+        return ResponseEntity
+                .status(ErrorCode.INVALID_ARGUMENT.getHttpStatus())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(ApiResponse.<Void>builder()
+                        .code(ErrorCode.INVALID_ARGUMENT.getCode())
+                        .message("Oke")
                         .build());
     }
 }

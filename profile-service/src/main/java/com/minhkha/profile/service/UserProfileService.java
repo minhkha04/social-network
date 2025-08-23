@@ -11,6 +11,8 @@ import com.minhkha.profile.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -28,18 +30,22 @@ public class UserProfileService {
         return userProfileMapper.toUserProfileResponse(userProfile);
     }
 
-    public UserProfileResponse getProfileByUserId(String userId) {
-        return userProfileMapper.toUserProfileResponse(userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.USER_PROFILE_NOT_FOUND)));
-    }
 
     public void deleteProfileByUserId(String userId) {
         userProfileRepository.deleteByUserId(userId);
     }
 
+    @PreAuthorize("#userId ==  authentication.name")
     public UserProfileResponse updateProfile(UserProfileUpdateRequest request, String userId) {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.USER_PROFILE_NOT_FOUND));
         userProfileMapper.updateUserProfile(userProfile, request);
         return userProfileMapper.toUserProfileResponse(userProfileRepository.save(userProfile));
+    }
+
+
+    public UserProfileResponse getProfile() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userProfileMapper.toUserProfileResponse(userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.USER_PROFILE_NOT_FOUND)));
     }
 
 }

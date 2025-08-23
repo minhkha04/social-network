@@ -3,7 +3,6 @@ package com.minhkha.identity.service;
 import com.minhkha.identity.dto.request.*;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
-import com.minhkha.identity.dto.response.UserProfileResponse;
 import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.*;
 import com.minhkha.identity.expection.AppException;
@@ -19,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -118,10 +116,5 @@ public class AuthService {
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
                 .build();
-    }
-
-    public UserProfileResponse getUserProfile() {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userProfileClient.getUserProfileByUserId(userId);
     }
 }
