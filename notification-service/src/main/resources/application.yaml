@@ -10,8 +10,9 @@ spring:
       group-id: notification-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
+      value-deserializer: org.apache.kafka.common.serialization.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
 server:
   port: 8082
   servlet:

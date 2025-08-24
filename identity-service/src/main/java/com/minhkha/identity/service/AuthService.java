@@ -5,6 +5,7 @@ import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
 import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.*;
+import com.minhkha.identity.event.dto.NotificationEvent;
 import com.minhkha.identity.expection.AppException;
 import com.minhkha.identity.expection.ErrorCode;
 import com.minhkha.identity.config.JwtProvider;
@@ -39,7 +40,7 @@ public class AuthService {
     MailOtpService mailOtpService;
     UserProfileClient userProfileClient;
     UserProfileMapper userProfileMapper;
-    KafkaTemplate<String, String> kafkaTemplate;
+    KafkaTemplate<String, NotificationEvent> kafkaTemplate;
 
     public AuthenticationResponse login(AuthRequest request, AuthProvider authProvider) {
         return authStrategyFactory.getStrategy(authProvider).login(request);
@@ -62,7 +63,13 @@ public class AuthService {
 
 //        mailOtpService.verify(request.getEmail(), request.getOtp());
 
-        kafkaTemplate.send("user-created", "Welcome " + request.getFullName());
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .recipient(request.getEmail())
+                .subject("Welcome to Book Social Network")
+                .body("You have successfully registered an account")
+                .build();
+        kafkaTemplate.send("notification-delivery", notificationEvent);
+
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
                 .build();
