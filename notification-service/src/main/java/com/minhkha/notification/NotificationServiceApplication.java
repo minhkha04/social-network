@@ -1,4 +1,4 @@
-package com.minhkha.notification_service;
+package com.minhkha.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

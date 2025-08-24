@@ -1,4 +1,4 @@
-package com.minhkha.notification_service;
+package com.minhkha.notification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: identity-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  kafka:
+    bootstrap-servers: localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration_ms: ${JWT_EXPIRATION_MS}
+  service:
+    url: ${PROFILE_SERVICE_URL}
+
+resend:
+  api:
+    key: ${RESEND_API_KEY}
+  from: ${RESEND_FROM}
+
+google_client_id: ${GOOGLE_CLIENT_ID}

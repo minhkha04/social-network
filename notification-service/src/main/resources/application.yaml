@@ -4,8 +4,20 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:minhkha1606@localhost:27017/notification-service?authSource=admin
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 server:
   port: 8082
   servlet:
     context-path: /notification
+
+app:
+  resend:
+    api:
+      key: ${RESEND_API_KEY}

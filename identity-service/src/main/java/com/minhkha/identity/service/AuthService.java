@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class AuthService {
     MailOtpService mailOtpService;
     UserProfileClient userProfileClient;
     UserProfileMapper userProfileMapper;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     public AuthenticationResponse login(AuthRequest request, AuthProvider authProvider) {
         return authStrategyFactory.getStrategy(authProvider).login(request);
@@ -59,6 +61,8 @@ public class AuthService {
 
 
 //        mailOtpService.verify(request.getEmail(), request.getOtp());
+
+        kafkaTemplate.send("user-created", "Welcome " + request.getFullName());
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
                 .build();
