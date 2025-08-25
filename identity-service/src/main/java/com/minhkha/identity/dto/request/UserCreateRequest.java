@@ -33,8 +33,8 @@ public class UserCreateRequest {
     @BirthDate(min = 21, message = "Bạn phải đủ 21 tuổi")
     LocalDate birthDate;
 
-//    @NotBlank(message = "Mật khẩu không được để trống")
-//    @Size(max = 6, min = 6, message = "Otp phải có 6 ký tự")
-//    @Pattern(regexp = "^[0-9]{6}$", message = "Mã OTP chỉ được chứa số")
-//    String otp;
+    @NotBlank(message = "Mật khẩu không được để trống")
+    @Size(max = 6, min = 6, message = "Otp phải có 6 ký tự")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Mã OTP chỉ được chứa số")
+    String otp;
 }

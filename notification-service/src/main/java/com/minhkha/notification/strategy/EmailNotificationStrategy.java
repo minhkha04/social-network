@@ -34,6 +34,7 @@ public class EmailNotificationStrategy implements NotificationStrategy {
         switch (event.getTemplateCode()) {
             case REGISTER_ACCOUNT -> html = templateRender.render("verify-email.html", event.getParams());
             case RESET_PASSWORD -> html = templateRender.render("reset-password.html", event.getParams());
+            case WELCOME_NEW_USER ->  html = templateRender.render("welcome.html", event.getParams());
             default -> throw new AppException(ErrorCode.EMAIL_TYPE_INVALID);
         }
 

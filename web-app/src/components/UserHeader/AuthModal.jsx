@@ -88,7 +88,9 @@ const AuthModal = ({ isOpen, onClose, mode, setMode, setIsLoggedIn }) => {
         .catch((err) => {
           valueContext.handleNotification('error', err.response.data.message)
         })
-        .finally(() => {})
+        .finally(() => {
+          setConfirmLoading(false)
+        })
     } else if (mode === 'forgot_password') {
       authService.restPassword({ email, otp, password })
         .then((res) => {
@@ -104,7 +106,9 @@ const AuthModal = ({ isOpen, onClose, mode, setMode, setIsLoggedIn }) => {
         .catch((err) => {
           valueContext.handleNotification('error', err.response.data.message)
         })
-        .finally(() => {})
+        .finally(() => {
+          setConfirmLoading(false)
+        })
 
     }
   }

@@ -61,14 +61,16 @@ public class AuthService {
         userProfileClient.createUserProfile(userProfileCreateRequest);
 
 
-//        mailOtpService.verify(request.getEmail(), request.getOtp());
+        mailOtpService.verify(request.getEmail(), request.getOtp());
 
-//        NotificationEvent notificationEvent = NotificationEvent.builder()
-//                .recipient(request.getEmail())
-//                .subject("Welcome to Book Social Network")
-//                .body("You have successfully registered an account")
-//                .build();
-//        kafkaTemplate.send("notification-delivery", notificationEvent);
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .recipient(request.getEmail())
+                .subject("Welcome to Book Social Network")
+                .params(Map.of("userName", request.getFullName()))
+                .channel(Chanel.EMAIL)
+                .templateCode(TemplateCode.WELCOME_NEW_USER)
+                .build();
+        kafkaTemplate.send("notification-delivery", notificationEvent);
 
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))

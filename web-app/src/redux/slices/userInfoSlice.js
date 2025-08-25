@@ -9,7 +9,8 @@ const initialState = {
     birthDate: '',
     createdAt: '',
     updatedAt: '',
-    avatarUrl: ''
+    avatarUrl: '',
+    sex: '',
   }
 }
 

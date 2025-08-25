@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chào mừng bạn đến với YourCompany</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 520px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 28px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333333;
+            margin-bottom: 16px;
+        }
+        .highlight {
+            font-size: 18px;
+            color: #2a9d8f;
+            font-weight: bold;
+        }
+        p {
+            color: #555555;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #2a9d8f;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: #23867a;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Chào mừng đến với YourCompany!</h2>
+    <p>Xin chào <span class="highlight">{{userName}}</span>,</p>
+    <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>YourCompany</strong>.
+        Chúng tôi rất vui được đồng hành cùng bạn trên hành trình sắp tới.</p>
+    <p>Bạn có thể bắt đầu trải nghiệm ngay bằng cách đăng nhập vào hệ thống:</p>
+    <a href="{{loginUrl}}" class="btn">Đăng nhập ngay</a>
+    <p>Nếu bạn có bất kỳ câu hỏi nào, hãy liên hệ với chúng tôi qua email hỗ trợ:
+        <a href="mailto:support@yourcompany.com">support@yourcompany.com</a></p>
+    <div class="footer">
+        © 2025 YourCompany. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

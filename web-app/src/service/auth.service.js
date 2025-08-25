@@ -6,7 +6,7 @@ export const authService = {
   },
 
   register: (data) => {
-    return http.post('v1/auth/register', data)
+    return http.post('identity/register', data)
   },
 
   sendOTP: (data, type) => {
@@ -14,10 +14,10 @@ export const authService = {
   },
 
   restPassword: (data) => {
-    return http.post('v1/auth/reset-password', data)
+    return http.put('identity/reset-password', data)
   },
 
   introspect: (data) => {
-    return http.post('v1/auth/introspect', data)
+    return http.post('identity/introspect', data)
   }
 };

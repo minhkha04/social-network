@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-@RequestMapping("/")
 public class UserProfileController {
 
     UserProfileService userService;
