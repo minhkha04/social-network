@@ -5,7 +5,7 @@ import com.minhkha.identity.dto.response.ApiResponse;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
 import com.minhkha.identity.eums.AuthProvider;
-import com.minhkha.identity.eums.MailType;
+import com.minhkha.identity.eums.TemplateCode;
 import com.minhkha.identity.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class AuthController {
     @PostMapping("/send-otp")
     public ApiResponse<Void> sendOtp(
             @RequestBody @Valid SendOtpRequest request,
-            @RequestParam MailType type
+            @RequestParam TemplateCode type
     ) {
         authService.sendOtp(request, type);
         return ApiResponse.<Void>builder()

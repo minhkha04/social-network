@@ -1,5 +1,7 @@
 package com.minhkha.notification.event.dto;
 
+import com.minhkha.notification.enums.Chanel;
+import com.minhkha.notification.enums.TemplateCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +16,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationEvent {
-    String channel;
+    Chanel channel;
     String recipient;
-    String templateCode;
+    TemplateCode templateCode;
     Map<String, Object> params;
     String subject;
-    String body;
 }

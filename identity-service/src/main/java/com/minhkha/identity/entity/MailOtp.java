@@ -17,7 +17,7 @@ public class MailOtp {
     @Id
     String email;
 
-    @Column(nullable = false, length = 6)
+    @Column(nullable = false)
     String otp;
 
     @Column(nullable = false)

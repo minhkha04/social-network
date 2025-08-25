@@ -23,6 +23,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -36,7 +37,6 @@ public class AuthService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     JwtProvider jwtProvider;
-    MailService mailService;
     MailOtpService mailOtpService;
     UserProfileClient userProfileClient;
     UserProfileMapper userProfileMapper;
@@ -63,12 +63,12 @@ public class AuthService {
 
 //        mailOtpService.verify(request.getEmail(), request.getOtp());
 
-        NotificationEvent notificationEvent = NotificationEvent.builder()
-                .recipient(request.getEmail())
-                .subject("Welcome to Book Social Network")
-                .body("You have successfully registered an account")
-                .build();
-        kafkaTemplate.send("notification-delivery", notificationEvent);
+//        NotificationEvent notificationEvent = NotificationEvent.builder()
+//                .recipient(request.getEmail())
+//                .subject("Welcome to Book Social Network")
+//                .body("You have successfully registered an account")
+//                .build();
+//        kafkaTemplate.send("notification-delivery", notificationEvent);
 
         return AuthenticationResponse.builder()
                 .token(jwtProvider.generateToken(user))
@@ -88,35 +88,27 @@ public class AuthService {
                 .build();
     }
 
-    public void sendOtp(SendOtpRequest request, MailType type) {
-        switch (type) {
-            case REGISTER_ACCOUNT -> {
-                String otp = OtpUtil.generateOtp();
-                mailOtpService.create(request.getEmail(), otp);
-                MailRequest mailRequest = MailRequest.builder()
-                        .mailType(MailType.REGISTER_ACCOUNT)
-                        .toEmail(request.getEmail())
-                        .subject("Verify your email")
-                        .params(Map.of("otp", otp))
-                        .build();
-                mailService.sendMail(mailRequest);
-            }
-            case RESET_PASSWORD -> {
-                userRepository.findUserByEmail(request.getEmail())
-                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-                String otp = OtpUtil.generateOtp();
-                mailOtpService.create(request.getEmail(), otp);
-                MailRequest mailRequest = MailRequest.builder()
-                        .mailType(MailType.RESET_PASSWORD)
-                        .toEmail(request.getEmail())
-                        .subject("Change your password")
-                        .params(Map.of("otp", otp))
-                        .build();
-                mailService.sendMail(mailRequest);
-            }
-            default -> throw new AppException(ErrorCode.RESEND_OTP_TYPE_INVALID);
-        }
+    public void sendOtp(SendOtpRequest request, TemplateCode templateCode) {
+        String otp = OtpUtil.generateOtp();
+        LocalDateTime expiredTime = LocalDateTime.now().plusMinutes(5);
+        mailOtpService.create(request.getEmail(), otp, expiredTime);
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel(Chanel.EMAIL)
+                .recipient(request.getEmail())
+                .subject(switch (templateCode) {
+                    case REGISTER_ACCOUNT -> "Verify your account";
+                    case RESET_PASSWORD -> "Change your password";
+                    default -> throw new AppException(ErrorCode.RESEND_OTP_TYPE_INVALID);
+                })
+                .templateCode(templateCode)
+                .params(Map.of(
+                        "otp", otp,
+                        "expiredTime", 5
+                ))
+                .build();
+        kafkaTemplate.send("notification-delivery", notificationEvent);
     }
+
 
     public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
         User user = userRepository.findUserByEmail(request.getEmail())
