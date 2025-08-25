@@ -147,7 +147,6 @@ const AuthModal = ({ isOpen, onClose, mode, setMode, setIsLoggedIn }) => {
     valueContext.handleNotification('error', 'Login failed. Please try again.')
   };
 
-
   const handleLoginWithFbSuccess = (response) => {
     const accessToken = response.accessToken;
 

@@ -13,8 +13,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) return
-    console.log(token)
-
     authService.introspect({ token })
       .then(res => {
         if (res.data.data.valid) {

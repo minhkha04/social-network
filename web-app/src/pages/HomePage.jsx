@@ -1,9 +1,10 @@
 import React from 'react'
+import Post from '../components/Post.jsx'
 
 const HomePage = () => {
   return (
     <div>
-      Home Page
+      <Post />
     </div>
   )
 }

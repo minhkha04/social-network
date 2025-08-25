@@ -2,16 +2,12 @@ package com.minhkha.post.controller;
 
 import com.minhkha.post.dto.request.PostRequest;
 import com.minhkha.post.dto.response.ApiResponse;
+import com.minhkha.post.dto.response.PageResponse;
 import com.minhkha.post.dto.response.PostResponse;
 import com.minhkha.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
@@ -28,9 +24,12 @@ public class PostController {
     }
 
     @GetMapping("/my-post")
-    public ApiResponse<List<PostResponse>> findByUserId() {
-        return ApiResponse.<List<PostResponse>>builder()
-                .data(postService.findByUserId())
+    public ApiResponse<PageResponse<PostResponse>> findByUserId(
+            @RequestParam(required = false, defaultValue = "1") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+        return ApiResponse.<PageResponse<PostResponse>>builder()
+                .data(postService.findByUserId(page, size))
                 .build();
     }
 }
