@@ -26,6 +26,12 @@ spring:
             - Path=${api.api-prefix}/notification/**
           filters:
             - StripPrefix=${api.strip-prefix}
+        - id: post-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=${api.api-prefix}/post/**
+          filters:
+            - StripPrefix=${api.strip-prefix}
 
 server:
   port: 8888
