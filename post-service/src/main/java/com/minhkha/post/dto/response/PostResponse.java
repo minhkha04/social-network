@@ -15,4 +15,6 @@ public class PostResponse {
     Instant createdAt;
     Instant modifiedAt;
     String created;
+    String userFullName;
+    String userAvatarUrl;
 }

@@ -3,9 +3,11 @@ package com.minhkha.post.service;
 import com.minhkha.post.dto.request.PostRequest;
 import com.minhkha.post.dto.response.PageResponse;
 import com.minhkha.post.dto.response.PostResponse;
+import com.minhkha.post.dto.response.UserProfileResponse;
 import com.minhkha.post.entity.Post;
 import com.minhkha.post.mapper.PostMapper;
 import com.minhkha.post.repository.PostRepository;
+import com.minhkha.post.repository.httpClient.ProfileClient;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class PostService {
     PostRepository postRepository;
     PostMapper postMapper;
     MyDateTimeFormatter myDateTimeFormatter;
+    ProfileClient profileClient;
 
     public PostResponse createPost(PostRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,17 +49,27 @@ public class PostService {
     public PageResponse<PostResponse> findByUserId(int page, int size) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Sort sort = Sort.by("createdAt").descending();
+        UserProfileResponse userProfileResponse = null;
+        try {
+            userProfileResponse = profileClient.getProfile(userId).getData();
+        } catch (Exception e) {
+            log.error("Cannot get user profile", e);
+        }
 
         Pageable pageable = PageRequest.of(page - 1, size, sort);
 
         Page<Post> pageData = postRepository.findByUserId(userId, pageable);
 
 
+        String userFullName = userProfileResponse != null ? userProfileResponse.getFullName() : "";
+        String userAvatarUrl = userProfileResponse != null ? userProfileResponse.getAvatarUrl() : "";
         List<PostResponse> postsList = pageData.getContent()
                 .stream()
                 .map(post -> {
                     var postResponse = postMapper.toPostResponse(post);
                     postResponse.setCreated(myDateTimeFormatter.format(post.getCreatedAt()));
+                    postResponse.setUserFullName(userFullName);
+                    postResponse.setUserAvatarUrl(userAvatarUrl);
                     return postResponse;
                 }).toList();
 
