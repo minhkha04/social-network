@@ -28,6 +28,7 @@ public class PostService {
 
     PostRepository postRepository;
     PostMapper postMapper;
+    MyDateTimeFormatter myDateTimeFormatter;
 
     public PostResponse createPost(PostRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -50,12 +51,21 @@ public class PostService {
 
         Page<Post> pageData = postRepository.findByUserId(userId, pageable);
 
+
+        List<PostResponse> postsList = pageData.getContent()
+                .stream()
+                .map(post -> {
+                    var postResponse = postMapper.toPostResponse(post);
+                    postResponse.setCreated(myDateTimeFormatter.format(post.getCreatedAt()));
+                    return postResponse;
+                }).toList();
+
         return PageResponse.<PostResponse>builder()
                 .pageSize(size)
                 .pageNumber(page)
                 .totalPages(pageData.getTotalPages())
                 .totalElements(pageData.getTotalElements())
-                .data(pageData.getContent().stream().map(postMapper::toPostResponse).toList())
+                .data(postsList)
                 .build();
     }
 }

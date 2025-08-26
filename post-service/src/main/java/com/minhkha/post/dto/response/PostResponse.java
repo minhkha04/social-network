@@ -14,4 +14,5 @@ public class PostResponse {
     String content;
     Instant createdAt;
     Instant modifiedAt;
+    String created;
 }
