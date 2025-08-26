@@ -5,6 +5,7 @@ import InputCustom from './Input/InputCustom.jsx'
 import { Button } from '@mui/material'
 import { NotificationContext } from '../App.jsx'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import PostCard from './PostCard.jsx'
 
 const Post = () => {
   const [posts, setPosts] = useState([])
@@ -92,7 +93,7 @@ const Post = () => {
   }, [])
 
   return (
-    <div className="container mx-auto mt-5 px-4">
+    <div className="container mt-5 px-4">
       {/* Create Post Button */}
       <div className="mb-5">
         <Button onClick={() => setIsOpen(true)} variant="outlined">Create Post</Button>
@@ -128,13 +129,8 @@ const Post = () => {
           endMessage={<p className="text-center font-medium">Đã tải hết tất cả bài viết 🎉</p>}
         >
           {posts.map(post => (
-            <div key={post.id} className="border p-4 rounded mb-4 bg-white shadow-sm">
-              <p><strong>Id:</strong> {post.id}</p>
-              <p><strong>User ID:</strong> {post.userId}</p>
-              <p><strong>Content:</strong> {post.content}</p>
-              <p><strong>Created At:</strong> {new Date(post.createdAt).toLocaleString()}</p>
-              <p><strong>Created:</strong> {post.created}</p>
-              <p><strong>Modified At:</strong> {new Date(post.modifiedAt).toLocaleString()}</p>
+            <div key={post.id} className={'p-4'}>
+              <PostCard post={post} />
             </div>
           ))}
         </InfiniteScroll>
