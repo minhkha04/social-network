@@ -11,7 +11,6 @@ const Post = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
-
   const [content, setContent] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -134,6 +133,7 @@ const Post = () => {
               <p><strong>User ID:</strong> {post.userId}</p>
               <p><strong>Content:</strong> {post.content}</p>
               <p><strong>Created At:</strong> {new Date(post.createdAt).toLocaleString()}</p>
+              <p><strong>Created:</strong> {post.created}</p>
               <p><strong>Modified At:</strong> {new Date(post.modifiedAt).toLocaleString()}</p>
             </div>
           ))}
