@@ -13,3 +13,9 @@ server:
   port: 8084
   servlet:
     context-path: /file
+
+app:
+  cloudinary:
+    cloud-name: ${CLOUDINARY_CLOUD_NAME}
+    api-key: ${CLOUDINARY_API_KEY}
+    api-secret: ${CLOUDINARY_API_SECRET}

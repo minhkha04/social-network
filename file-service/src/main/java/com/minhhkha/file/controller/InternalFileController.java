@@ -1,6 +1,7 @@
 package com.minhhkha.file.controller;
 
 import com.minhhkha.file.dto.response.ApiResponse;
+import com.minhhkha.file.service.CloudinaryService;
 import com.minhhkha.file.service.FileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +15,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/media")
+@RequestMapping("/internal")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class FileController {
+public class InternalFileController {
 
     FileService fileService;
+    CloudinaryService cloudinaryService;
 
-    @PostMapping("/upload")
-    public ApiResponse<Object> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        return ApiResponse.builder()
-                .data(fileService.uploadFile(file))
+    @PostMapping("/upload/image")
+    public ApiResponse<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return ApiResponse.<String>builder()
+                .data(cloudinaryService.uploadImage(file))
                 .build();
     }
 }

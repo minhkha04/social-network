@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_URLS = {"/file/**"};
+    private static final String[] PUBLIC_URLS = {"/internal/**"};
 
 
     private final CustomJwtDecoder customJwtDecoder;

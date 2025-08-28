@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -15,25 +16,32 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserProfileController {
 
-    UserProfileService userService;
+    UserProfileService userProfileService;
 
     @GetMapping()
     public ApiResponse<UserProfileResponse> getUserProfile() {
         return ApiResponse.<UserProfileResponse>builder()
-                .data(userService.getProfile())
+                .data(userProfileService.getProfile())
                 .build();
     }
 
     @DeleteMapping("/{userId}")
     public ApiResponse<?> deleteUserProfileByUserId(@PathVariable String userId) {
-        userService.deleteProfileByUserId(userId);
+        userProfileService.deleteProfileByUserId(userId);
         return ApiResponse.builder().build();
     }
 
     @PutMapping("/{userId}")
     public ApiResponse<UserProfileResponse> updateUserProfile(@RequestBody UserProfileUpdateRequest request, @PathVariable String userId) {
         return  ApiResponse.<UserProfileResponse>builder()
-                .data(userService.updateProfile(request, userId))
+                .data(userProfileService.updateProfile(request, userId))
+                .build();
+    }
+
+    @PutMapping("/avatar")
+    public ApiResponse<UserProfileResponse> updateAvatar(@RequestParam("file") MultipartFile file) {
+        return ApiResponse.<UserProfileResponse>builder()
+                .data(userProfileService.updateAvatar(file))
                 .build();
     }
 }
