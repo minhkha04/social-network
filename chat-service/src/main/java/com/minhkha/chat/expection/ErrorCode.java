@@ -12,7 +12,8 @@ public enum ErrorCode {
     INVALID_ARGUMENT(5002, "Lỗi validation", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(5003, "Bạn chưa đăng nhập", HttpStatus.UNAUTHORIZED),
     PARTICIPANT_NOT_FOUND(5004, "Không tìm thấy id partner", HttpStatus.NOT_FOUND),
-    DUPLICATE_REQUEST(5005, "Yêu cầu bị trùng", HttpStatus.CONFLICT)
+    DUPLICATE_REQUEST(5005, "Yêu cầu bị trùng", HttpStatus.CONFLICT),
+    CONVERSATION_NOT_FOUND(5006, "Cuộc trò chuyện không tìm thấy", HttpStatus.NOT_FOUND),
     ;
     int code;
     String message;
