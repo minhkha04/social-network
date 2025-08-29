@@ -12,5 +12,4 @@ public interface UserProfileClient {
 
     @PostMapping(value = "/internal", produces = MediaType.APPLICATION_JSON_VALUE)
     UserProfileResponse createUserProfile(@RequestBody UserProfileCreateRequest request);
-
 }

@@ -13,8 +13,11 @@ import com.minhkha.profile.repository.httpClient.UserProfileClient;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,7 +54,14 @@ public class UserProfileService {
 
     public UserProfileResponse getProfile() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userProfileMapper.toUserProfileResponse(userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.USER_PROFILE_NOT_FOUND)));
+        String role = (((JwtAuthenticationToken) SecurityContextHolder
+                .getContext()
+                .getAuthentication())
+                .getToken())
+                .getClaimAsString("scope");
+        UserProfileResponse userProfileResponse = userProfileMapper.toUserProfileResponse(userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.USER_PROFILE_NOT_FOUND)));
+        userProfileResponse.setRole(role);
+        return userProfileResponse;
     }
 
 

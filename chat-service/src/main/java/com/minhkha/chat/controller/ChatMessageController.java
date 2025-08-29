@@ -1,5 +1,6 @@
 package com.minhkha.chat.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.minhkha.chat.dto.request.ChatMessageRequest;
 import com.minhkha.chat.dto.response.ApiResponse;
 import com.minhkha.chat.dto.response.ChatMessageResponse;

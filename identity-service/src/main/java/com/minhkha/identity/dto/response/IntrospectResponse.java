@@ -1,10 +1,11 @@
 package com.minhkha.identity.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class IntrospectResponse {
     boolean isValid;
 }

@@ -1,5 +1,6 @@
 package com.minhkha.identity.dto.response;
 
+import com.minhkha.identity.eums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class UserProfileResponse {
     String city;
     String sex;
     String avatarUrl;
+    Role role;
+    String email;
 }

@@ -5,6 +5,8 @@ import InputCustom from '../components/Input/InputCustom.jsx';
 import { chatService } from '../service/chat.service.js';
 import { userService } from '../service/user.service.js';
 import debounce from 'lodash.debounce';
+import { io } from "socket.io-client";
+import { useSelector } from 'react-redux'
 
 const FALLBACK_AVATAR = 'https://via.placeholder.com/50';
 
@@ -27,6 +29,7 @@ const ChatPage = () => {
   const listRef = useRef(null);
   const bottomRef = useRef(null);
 
+  const { userInfo } = useSelector((state) => state.userInfoSlice)
   // Lấy conversation (KHÔNG auto-select lần đầu)
   useEffect(() => {
     if (isLoggedIn) {
@@ -42,6 +45,49 @@ const ChatPage = () => {
       setMessages([]);
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    console.log("Initializing socket connection...")
+    console.log("UserId: ", userInfo?.userId)
+    const socket = io(`http://localhost:8099?token=${JSON.parse(localStorage.getItem('token'))}&userId=${userInfo?.userId}`);
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    })
+
+    socket.on('message', (rawMsg) => {
+      let message;
+      try {
+        message = typeof rawMsg === 'string' ? JSON.parse(rawMsg) : rawMsg;
+      } catch (e) {
+        console.error("Không parse được message:", rawMsg, e);
+        return;
+      }
+
+      console.log('Received message:', message);
+
+      // CHỈ append nếu conversationId đang chọn trùng với message
+      setMessages(prev => {
+        // Nếu đang ở đúng conversation thì append
+        if (selectedConversationId && message.conversationId === selectedConversationId) {
+          // Tránh duplicate nếu đã có id này (trường hợp gửi xong cũng append local)
+          if (prev.some(m => m.id === message.id)) return prev;
+          return [...prev, message];
+        }
+        return prev;
+      });
+    });
+
+    return () => {
+      console.log('Closing socket connection...');
+      socket.close();
+    }
+
+  }, [selectedConversationId])
 
   // Debounced search
   const debouncedFetch = useCallback(
@@ -109,25 +155,18 @@ const ChatPage = () => {
     const msg = inputMessage.trim();
     if (!msg || !selectedConversationId || sending) return;
 
-    try {
-      setSending(true);
-      console.log(selectedConversationId);
-      console.log(msg);
-      const res = await chatService.creatChatMessages({
-        conversationId: selectedConversationId,
-        message: msg,
-      });
 
-      const newMsg = res.data?.data;
-      if (newMsg) {
-        setMessages(prev => [...prev, newMsg]); // append kết quả từ server (có me, createdAt...)
-        setInputMessage('');
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setSending(false);
-    }
+    chatService.creatChatMessages({conversationId: selectedConversationId, message: msg})
+      .then(res => {
+        const newMsg = res.data?.data;
+        if (newMsg) {
+          setInputMessage('');
+        }
+      })
+      .catch(console.error)
+      .finally(() => {
+        setSending(false);
+      })
   };
 
   // Enter để gửi, Shift+Enter để xuống dòng

@@ -22,4 +22,5 @@ public class UserProfileResponse {
     String sex;
     String avatarUrl;
     String email;
+    String role;
 }

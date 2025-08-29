@@ -11,6 +11,7 @@ const initialState = {
     updatedAt: '',
     avatarUrl: '',
     sex: '',
+    userId: '',
   }
 }
 

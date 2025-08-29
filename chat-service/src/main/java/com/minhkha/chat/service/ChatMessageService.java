@@ -1,11 +1,15 @@
 package com.minhkha.chat.service;
 
+import com.corundumstudio.socketio.SocketIOServer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minhkha.chat.dto.request.ChatMessageRequest;
 import com.minhkha.chat.dto.response.ChatMessageResponse;
 import com.minhkha.chat.dto.response.UserProfileResponse;
 import com.minhkha.chat.entity.ChatMessage;
 import com.minhkha.chat.entity.Conversation;
 import com.minhkha.chat.entity.ParticipantInfo;
+import com.minhkha.chat.entity.WebSocketSession;
 import com.minhkha.chat.expection.AppException;
 import com.minhkha.chat.expection.ErrorCode;
 import com.minhkha.chat.mapper.ChatMessageMapper;
@@ -19,20 +23,28 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class ChatMessageService {
 
+    SocketIOServer socketIOServer;
     ChatMessageRepository chatMessageRepository;
     ChatMessageMapper chatMessageMapper;
     ConversationRepository conversationRepository;
     ProfileClient profileClient;
+    WebSocketSessionService webSocketSessionService;
+    ObjectMapper objectMapper;
+
 
     private ChatMessageResponse toChatMessageResponse(ChatMessage chatMessage) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        ChatMessageResponse chatMessageResponse =  chatMessageMapper.toChatMessageResponse(chatMessage);
+        ChatMessageResponse chatMessageResponse = chatMessageMapper.toChatMessageResponse(chatMessage);
         chatMessageResponse.setMe(userId.equals(chatMessage.getSender().getUserId()));
 
         return chatMessageResponse;
@@ -59,14 +71,39 @@ public class ChatMessageService {
                 .avatarUrl(userProfileResponse.getAvatarUrl())
                 .build();
 
-
         ChatMessage chatMessage = chatMessageMapper.toChatMessage(request);
         chatMessage.setSender(participantInfo);
         chatMessage.setCreatedAt(Instant.now());
 
         chatMessage = chatMessageRepository.save(chatMessage);
 
-        return toChatMessageResponse(chatMessage);
+
+        List<String> userIds = conversation.getParticipants()
+                .stream()
+                .map(ParticipantInfo::getUserId).toList();
+
+        ChatMessageResponse chatMessageResponse = toChatMessageResponse(chatMessage);
+
+        Map<String, WebSocketSession> socketSessionIds = webSocketSessionService.findByUserIdIn(userIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        WebSocketSession::getSocketSessionId,
+                        Function.identity()));
+
+        socketIOServer.getAllClients()
+                .forEach(x -> {
+                    WebSocketSession webSocketSession = socketSessionIds.get(x.getSessionId().toString());
+                    if (Objects.nonNull(webSocketSession)) {
+                        try {
+                            chatMessageResponse.setMe(webSocketSession.getUserId().equals(userId));
+                            x.sendEvent("message", objectMapper.writeValueAsString(chatMessageResponse));
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+
+        return chatMessageResponse;
     }
 
 

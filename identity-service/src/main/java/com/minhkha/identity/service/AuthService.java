@@ -3,6 +3,7 @@ package com.minhkha.identity.service;
 import com.minhkha.identity.dto.request.*;
 import com.minhkha.identity.dto.response.AuthenticationResponse;
 import com.minhkha.identity.dto.response.IntrospectResponse;
+import com.minhkha.identity.dto.response.UserProfileResponse;
 import com.minhkha.identity.entity.User;
 import com.minhkha.identity.eums.*;
 import com.minhkha.identity.event.dto.NotificationEvent;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +112,6 @@ public class AuthService {
                 .build();
         kafkaTemplate.send("notification-delivery", notificationEvent);
     }
-
 
     public AuthenticationResponse resetPassword(ResetPasswordRequest request) {
         User user = userRepository.findUserByEmail(request.getEmail())
