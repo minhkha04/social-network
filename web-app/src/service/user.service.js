@@ -9,5 +9,9 @@ export const userService = {
     return http.put('/profile/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
+  },
+
+  findByFullName: (fullName) => {
+    return http.get(`/profile/find-by-full-name?fullName=${fullName}`)
   }
 }

@@ -18,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
@@ -64,5 +66,12 @@ public class UserProfileService {
         ApiResponse<String> response = userProfileClient.uploadImage(file);
         userProfile.setAvatarUrl(response.getData());
         return userProfileMapper.toUserProfileResponse(userProfileRepository.save(userProfile));
+    }
+
+    public List<UserProfileResponse> searchUserByFullName(String fullName) {
+        return userProfileRepository.findByFullNameContainingIgnoreCase(fullName)
+                .stream()
+                .map(userProfileMapper::toUserProfileResponse)
+                .toList();
     }
 }

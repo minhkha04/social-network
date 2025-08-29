@@ -76,6 +76,18 @@ const UserHeader = () => {
                 Profile
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to={path.chatPage}
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-black font-bold border-b-2 border-black'
+                    : 'text-gray-700 hover:text-black'
+                }
+              >
+                Chat
+              </NavLink>
+            </li>
           </ul>
           {!isLoggedIn
             ? <div className={'flex flex-row gap-4'}>

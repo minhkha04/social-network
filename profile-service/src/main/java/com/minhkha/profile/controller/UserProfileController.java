@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
@@ -44,4 +46,12 @@ public class UserProfileController {
                 .data(userProfileService.updateAvatar(file))
                 .build();
     }
+
+    @GetMapping("/find-by-full-name")
+    public ApiResponse<List<UserProfileResponse>> searchUserByFullName(@RequestParam String fullName) {
+        return ApiResponse.<List<UserProfileResponse>>builder()
+                .data(userProfileService.searchUserByFullName(fullName))
+                .build();
+    }
+
 }

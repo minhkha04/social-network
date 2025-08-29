@@ -5,6 +5,7 @@ import PageNotFound from '../components/PageNotFound/PageNotFound.jsx'
 import { path } from '../common/path.js'
 import HomePage from '../pages/HomePage.jsx'
 import ProfilePage from '../pages/ProfilePage.jsx'
+import ChatPage from '../pages/ChatPage.jsx'
 
 const UseRoutesCustom = () => {
   return useRoutes([
@@ -20,6 +21,10 @@ const UseRoutesCustom = () => {
         {
           path: path.profilePage,
           element: <ProfilePage/>,
+        },
+        {
+          path: path.chatPage,
+          element: <ChatPage/>,
         },
       ],
     },
