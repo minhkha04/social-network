@@ -56,11 +56,11 @@ const ProfilePage = () => {
 
   }
 
-return <>
+return <div className={'pt-[72px] container'}>
   {isLoggedIn
-    ? <div className="min-h-[calc(100vh-160px)] bg-gray-50 py-10 px-4">
-      <div className="mx-auto max-w-3xl">
-        <div className="bg-white shadow-sm rounded-2xl p-6 sm:p-8">
+    ? <div className="min-h-[calc(100vh-160px)] py-10 px-4">
+      <div>
+        <div className="shadow-sm rounded-2xl p-6 sm:p-8">
           {/* Header */}
           <div className="flex items-center gap-5">
             {avatarUrl ? (
@@ -82,7 +82,7 @@ return <>
           </div>
 
           {/* Divider */}
-          <div className="h-px bg-gray-100 my-6"/>
+          <div className="h-px my-6"/>
 
           {/* Info grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -140,7 +140,7 @@ return <>
     </div>
     : <div>Please login to see profile</div>
   }
-</>
+</div>
 
 }
 

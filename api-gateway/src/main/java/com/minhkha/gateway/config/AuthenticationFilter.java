@@ -34,7 +34,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
     @NonFinal
     List<String> publicEndpoints = List.of(
-            "/identity/", "/notification/"
+            "/identity/", "/notification/", "/post/public"
     );
 
     @NonFinal

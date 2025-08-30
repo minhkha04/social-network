@@ -3,4 +3,5 @@ export const path = {
   pageNotFound: '*',
   profilePage: '/profile',
   chatPage: '/chat',
+  myPostPage: '/my-post',
 }

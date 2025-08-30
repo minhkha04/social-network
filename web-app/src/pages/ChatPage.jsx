@@ -87,7 +87,7 @@ const ChatPage = () => {
       socket.close();
     }
 
-  }, [selectedConversationId])
+  }, [selectedConversationId, isLoggedIn, userInfo?.userId])
 
   // Debounced search
   const debouncedFetch = useCallback(
@@ -187,9 +187,9 @@ const ChatPage = () => {
   };
 
   return (
-    <div>
+    <div className={'container pt-[72px]'}>
       {isLoggedIn ? (
-        <div className="flex flex-col min-h-[calc(100vh-160px)] bg-gray-100">
+        <div className="flex flex-col h-[calc(100vh-160px)] bg-gray-100">
           <div className="flex flex-1 overflow-hidden">
             {/* Sidebar (vàng) */}
             <aside className="w-1/4 border-r flex flex-col">
@@ -304,7 +304,7 @@ const ChatPage = () => {
                 <div className="border-t px-3 py-2">
                   <div className="flex gap-2">
                     <textarea
-                      className="flex-1 resize-none rounded-md border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 px-3 py-2"
+                      className="flex-1 resize-none rounded-md border border-black px-3 py-2"
                       rows={2}
                       placeholder="Nhập tin nhắn... (Enter để gửi, Shift+Enter xuống dòng)"
                       value={inputMessage}
@@ -313,10 +313,10 @@ const ChatPage = () => {
                       disabled={sending}
                     />
                     <button
-                      className={`min-w-[80px] rounded-md px-4 py-2 font-medium text-white ${
+                      className={`min-w-[80px] rounded-md px-4 py-2 font-medium ${
                         inputMessage.trim() && !sending
-                          ? 'bg-red-500 hover:bg-red-600'
-                          : 'bg-red-300 cursor-not-allowed'
+                          ? 'bg-black hover:bg-black/50 text-white'
+                          : 'bg-black/50 cursor-not-allowed text-black'
                       }`}
                       onClick={handleSendMessage}
                       disabled={!inputMessage.trim() || sending}

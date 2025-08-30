@@ -1,16 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Post from '../components/Post.jsx'
-import { AuthContext } from '../components/context/AuthContext.jsx'
+import { postService } from '../service/post.service.js'
 
 const HomePage = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
   return (
-    <div>
-      {isLoggedIn
-        ? <Post />
-        : <div>Please login to see posts</div>
-      }
-
+    <div className={'pt-[72px]'}>
+      <Post service={postService.getPublicPost}/>
     </div>
   )
 }

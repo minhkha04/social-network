@@ -41,10 +41,10 @@ const UserHeader = () => {
   }, [])
 
   return (
-    <header>
+    <header className={''}>
       <AuthModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={'Login'} mode={model} setMode={setModel}
                  setIsLoggedIn={setIsLoggedIn}/>
-      <div className={'container flex flex-row justify-between items-center'}>
+      <div className={'container flex flex-row justify-between items-center fixed top-0 left-0 right-0 bg-white z-50'}>
         <div className={'logo'}>
           <Link to={path.homePage} onClick={() => scrollTo(0, 0)}>
             <img src={assets.logo} alt={'logo'} className={'h-16 w-16'}/>
@@ -74,6 +74,18 @@ const UserHeader = () => {
                 }
               >
                 Profile
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={path.myPostPage}
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-black font-bold border-b-2 border-black'
+                    : 'text-gray-700 hover:text-black'
+                }
+              >
+                My Post
               </NavLink>
             </li>
             <li>

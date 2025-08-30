@@ -81,4 +81,32 @@ public class PostService {
                 .data(postsList)
                 .build();
     }
+
+    public PageResponse<PostResponse> findAll(int page, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+
+        Page<Post> pageData = postRepository.findAll(pageable);
+
+
+        List<PostResponse> postsList = pageData.getContent()
+                .stream()
+                .map(post -> {
+                    var postResponse = postMapper.toPostResponse(post);
+                    UserProfileResponse userProfileResponse = profileClient.getProfile(post.getUserId()).getData();
+                    postResponse.setCreated(myDateTimeFormatter.format(post.getCreatedAt()));
+                    postResponse.setUserFullName(userProfileResponse != null ? userProfileResponse.getFullName() : "");
+                    postResponse.setUserAvatarUrl(userProfileResponse != null ? userProfileResponse.getAvatarUrl() : "");
+                    return postResponse;
+                }).toList();
+
+        return PageResponse.<PostResponse>builder()
+                .pageSize(size)
+                .pageNumber(page)
+                .totalPages(pageData.getTotalPages())
+                .totalElements(pageData.getTotalElements())
+                .data(postsList)
+                .build();
+    }
 }

@@ -7,7 +7,7 @@ import { NotificationContext } from '../App.jsx'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import PostCard from './PostCard.jsx'
 
-const Post = () => {
+const Post = ({service}) => {
   const [posts, setPosts] = useState([])
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
@@ -23,7 +23,7 @@ const Post = () => {
     console.log(`[CALL] fetchPostsByPage(${pageNumber})`)
     setLoading(true)
     try {
-      const res = await postService.getMyPost(pageNumber, 4)
+      const res = await service(pageNumber, 4)
       const data = res.data.data
 
       setPosts(data.data)
@@ -47,7 +47,7 @@ const Post = () => {
 
     setLoading(true)
     try {
-      const res = await postService.getMyPost(page, 4)
+      const res = await service(page, 4)
       const data = res.data.data
 
       setPosts(prev => [...prev, ...data.data])
@@ -119,7 +119,6 @@ const Post = () => {
 
       {/* Infinite Scroll Section */}
       <div className="mt-8">
-        <h2 className="text-xl font-bold mb-4">Your Posts</h2>
 
         <InfiniteScroll
           dataLength={posts.length}
