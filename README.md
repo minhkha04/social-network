@@ -132,14 +132,11 @@ Frontend connects to API Gateway for backend operations.
 
 ---
 
-## 👤 About Me (Giới thiệu)
-Hi, I'm **Minh Kha** – a backend-focused developer exploring scalable distributed systems and real-time features.  
-Xin chào! Mình là **Minh Kha**, yêu thích kiến trúc microservices, messaging systems (Kafka) và tối ưu hiệu năng.
+## 👤 About Me
 
 - 🌐 Portfolio: https://minhkha.techleaf.pro/  
 - 💼 GitHub: https://github.com/minhkha04  
 - 💬 Facebook: https://www.facebook.com/imMinhKha  
-- ✉️ Liên hệ nhanh: mở issue hoặc kết nối qua Facebook.  
 
 If you find this project interesting, feel free to star ⭐ the repo or reach out!
 
