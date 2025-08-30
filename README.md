@@ -37,6 +37,37 @@ Each service is a standalone Maven project and can run independently.
 
 ---
 
+## 🧰 Tech Stack
+<p>
+  <!-- Backend -->
+  <img alt="Java" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" height="40" />
+  <img alt="Spring" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg" height="40" />
+  <img alt="Maven" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/maven/maven-original.svg" height="40" />
+  <img alt="Kafka" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/apachekafka/apachekafka-original.svg" height="40" />
+  <img alt="Netty" src="https://avatars.githubusercontent.com/u/288455?s=200&v=4" height="40" />
+  <img alt="Socket.IO" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/socketio/socketio-original.svg" height="40" />
+  
+  <!-- Databases -->
+  <img alt="MySQL" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" height="40" />
+  <img alt="MongoDB" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" height="40" />
+  <img alt="Neo4j" src="https://avatars.githubusercontent.com/u/1955060?s=200&v=4" height="40" />
+  <img alt="Cloudinary" src="https://res.cloudinary.com/cloudinary/image/upload/v1694700000/marketing/brand/cloudinary_icon_blue.svg" height="40" />
+  
+  <!-- Frontend -->
+  <img alt="React" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" height="40" />
+  <img alt="Vite" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vitejs/vitejs-original.svg" height="40" />
+  <img alt="Redux" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" height="40" />
+  <img alt="Material UI" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/materialui/materialui-original.svg" height="40" />
+  <img alt="Ant Design" src="https://avatars.githubusercontent.com/u/12101536?s=200&v=4" height="40" />
+  
+  <!-- DevOps / Others -->
+  <img alt="Docker" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" height="40" />
+  <img alt="Git" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" height="40" />
+  <img alt="GitHub" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" height="40" />
+</p>
+
+---
+
 ## ⚙️ Running Locally
 
 ### Prerequisites
@@ -98,6 +129,19 @@ Frontend connects to API Gateway for backend operations.
   - Post, Chat, Notification, File → MongoDB  
   - Profile → Neo4j  
 - **Cloudinary credentials** required for image uploads.
+
+---
+
+## 👤 About Me (Giới thiệu)
+Hi, I'm **Minh Kha** – a backend-focused developer exploring scalable distributed systems and real-time features.  
+Xin chào! Mình là **Minh Kha**, yêu thích kiến trúc microservices, messaging systems (Kafka) và tối ưu hiệu năng.
+
+- 🌐 Portfolio: https://minhkha.techleaf.pro/  
+- 💼 GitHub: https://github.com/minhkha04  
+- 💬 Facebook: https://www.facebook.com/imMinhKha  
+- ✉️ Liên hệ nhanh: mở issue hoặc kết nối qua Facebook.  
+
+If you find this project interesting, feel free to star ⭐ the repo or reach out!
 
 ---
 
