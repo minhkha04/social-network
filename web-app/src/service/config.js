@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const http = axios.create({
-  baseURL: 'http://localhost:8888/api/v1', // domain
+  baseURL: import.meta.env.VITE_API_DOMAIN,
   timeout: 30000,
   headers: {},
 })
@@ -9,24 +9,24 @@ const http = axios.create({
 http.interceptors.request.use(
   function (config) {
     if (config.url.includes('identity') || config.url.includes('public')) {
-      return config;
+      return config
     }
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem('token'))
     if (token) {
-      config.headers.Authorization = "Bearer " + token;
+      config.headers.Authorization = 'Bearer ' + token
     }
-    return config;
+    return config
   },
-);
+)
 
 // Add a response interceptor
 http.interceptors.response.use(
   function (response) {
-    return response;
+    return response
   },
   function (error) {
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 export { http }

@@ -2,10 +2,10 @@ spring:
   application:
     name: profile-service
   neo4j:
-    uri: bolt://localhost:7687
+    uri: ${NEO4J_URI}
     authentication:
-      username: neo4j
-      password: minhkha1606
+      username: ${NEO4J_USERNAME}
+      password: ${NEO4J_PASSWORD}
   servlet:
     multipart:
       max-file-size: 10MB
@@ -19,4 +19,4 @@ server:
 
 app:
   service:
-    url: http://localhost:8084/file
+    url: ${FILE_SERVICE_URL}

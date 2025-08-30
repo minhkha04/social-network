@@ -9,37 +9,37 @@ spring:
     gateway:
       routes:
         - id: identity-service
-          uri: http://localhost:8080
+          uri: ${URI_IDENTITY}
           predicates:
             - Path=${api.api-prefix}/identity/**
           filters:
             - StripPrefix=${api.strip-prefix}
         - id: profile-service
-          uri: http://localhost:8081
+          uri: ${URI_PROFILE}
           predicates:
             - Path=${api.api-prefix}/profile/**
           filters:
             - StripPrefix=${api.strip-prefix}
         - id: notification-service
-          uri: http://localhost:8082
+          uri: ${URI_NOTIFICATION}
           predicates:
             - Path=${api.api-prefix}/notification/**
           filters:
             - StripPrefix=${api.strip-prefix}
         - id: post-service
-          uri: http://localhost:8083
+          uri: ${URI_POST}
           predicates:
             - Path=${api.api-prefix}/post/**
           filters:
             - StripPrefix=${api.strip-prefix}
         - id: file-service
-          uri: http://localhost:8084
+          uri: ${URI_FILE}
           predicates:
             - Path=${api.api-prefix}/file/**
           filters:
             - StripPrefix=${api.strip-prefix}
         - id: chat-service
-          uri: http://localhost:8085
+          uri: ${URI_CHAT}
           predicates:
             - Path=${api.api-prefix}/chat/**
           filters:

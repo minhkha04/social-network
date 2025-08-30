@@ -3,7 +3,7 @@ spring:
     name: post-service
   data:
     mongodb:
-      uri: mongodb://root:minhkha1606@localhost:27017/post-service?authSource=admin
+      uri: ${MONGODB_URI}
 
 server:
   port: 8083
@@ -13,4 +13,4 @@ server:
 app:
   service:
     profile:
-      url: http://localhost:8081/profile
+      url: ${PROFILE_SERVICE_URL}
